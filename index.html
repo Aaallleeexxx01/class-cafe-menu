@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<!--
+  ════════════════════════════════════════════════════════════════
+  CLASS CAFE · SÂNNICOLAU MARE — MENIU DIGITAL / DIGITAL MENU
+  Limbi / Languages: RO · EN · SR · HU  (link direct: #en #sr #hu)
+  ════════════════════════════════════════════════════════════════
+  CUM MODIFICI PREȚURILE / HOW TO EDIT PRICES:
+    1. Caută mai jos secțiunea marcată "MENU DATA — EDITEAZĂ AICI"
+       (Ctrl+F: EDITEAZĂ AICI)
+    2. Schimbă numărul de la "price:" (ex. price: 10 -> price: 12)
+    3. Salvează / commit pe GitHub -> site-ul se actualizează,
+       codul QR rămâne ACELAȘI. Nu trebuie retipărit nimic.
+  Un singur preț pe produs — toate cele 4 limbi îl folosesc automat.
+  One price per item — all 4 languages use it automatically.
+  ════════════════════════════════════════════════════════════════
+-->
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171210">
+<meta name="description" content="Class Cafe · Sânnicolau Mare — meniu și listă de prețuri · menu · meni · itallap">
+<title>Class Cafe · Meniu</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍺</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#171210;
+    --panel:#221a13;
+    --line:#3a2c1e;
+    --cream:#f1e7d0;
+    --muted:#a4937c;
+    --amber:#e2a63d;
+    --red:#b23a33;
+    --navy:#25324f;
+    --green:#2f7048;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    color:var(--cream);
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(900px 480px at 50% -8%, rgba(226,166,61,.07), transparent 60%),
+      repeating-linear-gradient(90deg, rgba(0,0,0,.20) 0 2px, transparent 2px 112px),
+      linear-gradient(#1a1410, #131009 70%);
+    background-attachment:fixed;
+    min-height:100vh;
+  }
+  .wrap{max-width:620px;margin:0 auto;padding:0 18px 56px}
+
+  /* ── sticky top bar ─────────────────────────────── */
+  .topbar{
+    position:sticky;top:0;z-index:60;
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    padding:10px 14px;
+    background:rgba(19,14,10,.85);
+    backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{
+    font-family:"Bebas Neue",sans-serif;
+    font-size:18px;letter-spacing:.12em;color:var(--cream);
+    display:flex;align-items:center;gap:7px;white-space:nowrap;
+  }
+  .brand .star{color:var(--amber);font-size:12px}
+  .lang{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+  .langbtn{
+    display:flex;align-items:center;gap:6px;
+    padding:7px 10px;border-radius:999px;cursor:pointer;
+    border:1px solid var(--line);background:#241b12;color:var(--muted);
+    font-family:"Oswald",sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;
+    transition:background .15s,color .15s,border-color .15s;
+  }
+  .langbtn.active{background:var(--amber);border-color:var(--amber);color:#241708}
+  .flag{width:16px;height:11px;border-radius:2px;overflow:hidden;display:inline-flex;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+  .flag svg{display:block;width:100%;height:100%}
+  @media (max-width:480px){
+    .topbar{flex-direction:column;gap:8px;padding:9px 10px}
+  }
+
+  /* ── hero ───────────────────────────────────────── */
+  .hero{position:relative;text-align:center;padding:26px 0 4px}
+  .bunting{display:flex;justify-content:center;gap:11px;position:relative;padding-top:5px;margin-bottom:20px}
+  .bunting::before{content:"";position:absolute;top:2px;left:6%;right:6%;height:2px;background:#3d2f20;border-radius:2px}
+  .bunting i{
+    width:17px;height:23px;margin-top:2px;
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    filter:drop-shadow(0 2px 2px rgba(0,0,0,.4));
+  }
+  .bunting i:nth-child(3n+1){background:#2f4d9b}
+  .bunting i:nth-child(3n+2){background:#e7c33b}
+  .bunting i:nth-child(3n)  {background:#c33b35}
+
+  .dartboard{
+    position:absolute;top:64px;right:-38px;z-index:0;
+    width:clamp(96px,26vw,150px);aspect-ratio:1;border-radius:50%;
+    transform:rotate(9deg);
+    border:9px solid #100d0a;
+    box-shadow:0 0 0 3px #2a2119, 0 14px 28px rgba(0,0,0,.55);
+    background:
+      radial-gradient(circle, #b53a31 0 7%, #2f7048 7% 12%, transparent 12%),
+      radial-gradient(circle, transparent 0 37%, rgba(181,58,49,.92) 37% 42%, transparent 42% 58%, rgba(47,112,72,.92) 58% 63%, transparent 63%),
+      repeating-conic-gradient(#efe4cc 0 9deg, #26221d 9deg 18deg);
+    opacity:.95;
+  }
+
+  .plate{
+    position:relative;z-index:1;
+    width:min(92%,430px);margin:0 auto;
+    padding:15px 20px 13px;
+    background:linear-gradient(180deg,#f6efdd,#e7dcc2);
+    border:3px solid #262b38;border-radius:12px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.65) inset,
+      0 -4px 10px rgba(0,0,0,.13) inset,
+      0 16px 32px rgba(0,0,0,.5);
+    transform:rotate(-1.2deg);
+  }
+  .bolt{
+    position:absolute;width:9px;height:9px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #cfc6ae, #6f6a58 72%);
+    box-shadow:0 1px 2px rgba(0,0,0,.45) inset;
+  }
+  .bolt.tl{top:7px;left:9px}.bolt.tr{top:7px;right:9px}
+  .bolt.bl{bottom:7px;left:9px}.bolt.br{bottom:7px;right:9px}
+  .plate-top{font-family:"Oswald",sans-serif;font-weight:600;font-size:11px;letter-spacing:.32em;color:var(--red)}
+  .plate-main{
+    font-family:"Bebas Neue",sans-serif;
+    font-size:clamp(46px,13vw,68px);line-height:.95;letter-spacing:.05em;
+    color:var(--navy);margin-top:3px;
+    text-shadow:0 1px 0 #fff, 0 3px 2px rgba(0,0,0,.28);
+  }
+  .plate-bot{font-family:"Oswald",sans-serif;font-weight:600;font-size:10.5px;letter-spacing:.42em;color:#5a5140;margin-top:5px}
+
+  .tagline{font-family:"Oswald",sans-serif;font-weight:500;font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--amber);margin-top:20px}
+  .subnote{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:7px}
+
+  /* ── ticker ─────────────────────────────────────── */
+  .ticker{margin:22px -18px 2px;padding:8px 0;overflow:hidden;border-block:1px solid var(--line);background:rgba(0,0,0,.27)}
+  .ticker-track{display:flex;width:max-content;white-space:nowrap;animation:tick 38s linear infinite}
+  .tick-seg{
+    font-family:"Oswald",sans-serif;font-weight:600;font-size:11px;
+    letter-spacing:.3em;text-transform:uppercase;color:#8d7c63;padding-right:.3em;
+  }
+  @keyframes tick{to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion: reduce){.ticker-track{animation:none}}
+
+  /* ── menu sections ──────────────────────────────── */
+  .sec{margin-top:32px}
+  .sec-h{display:flex;align-items:center;gap:13px;margin-bottom:8px}
+  .rule{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line))}
+  .rule.flip{background:linear-gradient(90deg,var(--line),transparent)}
+  .sec-t{
+    font-family:"Oswald",sans-serif;font-weight:600;font-size:14.5px;
+    letter-spacing:.26em;text-transform:uppercase;color:var(--amber);
+    display:flex;align-items:center;gap:9px;text-align:center;
+  }
+  .sec-t .ic{font-size:16px;letter-spacing:0}
+
+  .row{padding:9px 0}
+  .line{display:flex;align-items:baseline;gap:9px}
+  .iname{font-weight:600;font-size:14.5px;letter-spacing:.045em;text-transform:uppercase;color:var(--cream)}
+  .dots{flex:1;min-width:18px;border-bottom:2px dotted #4d3b26;transform:translateY(-4px)}
+  .iprice{font-family:"Oswald",sans-serif;font-weight:600;font-size:15px;letter-spacing:.04em;color:var(--amber);white-space:nowrap}
+  .imeta{font-size:12.5px;line-height:1.5;color:var(--muted);margin-top:3px;padding-right:8px}
+
+  /* ── footer ─────────────────────────────────────── */
+  footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:12.5px;line-height:2}
+  footer .fbrand{font-family:"Bebas Neue",sans-serif;font-size:15px;letter-spacing:.16em;color:#c9b795}
+
+  button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="star">★</span>CLASS CAFE<span class="star">★</span></div>
+  <div class="lang" role="group" aria-label="Limbă / Language / Jezik / Nyelv">
+    <button class="langbtn" data-lang="ro" aria-pressed="true">
+      <span class="flag"><svg viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#002B7F"/><rect x="1" width="1" height="2" fill="#FCD116"/><rect x="2" width="1" height="2" fill="#CE1126"/></svg></span>RO
+    </button>
+    <button class="langbtn" data-lang="en" aria-pressed="false">
+      <span class="flag"><svg viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 60,30 M60,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 60,30 M60,0 0,30" stroke="#C8102E" stroke-width="2.6"/><path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/></svg></span>EN
+    </button>
+    <button class="langbtn" data-lang="sr" aria-pressed="false">
+      <span class="flag"><svg viewBox="0 0 3 3" aria-hidden="true"><rect width="3" height="1" fill="#C6363C"/><rect y="1" width="3" height="1" fill="#0C4076"/><rect y="2" width="3" height="1" fill="#FFFFFF"/></svg></span>SR
+    </button>
+    <button class="langbtn" data-lang="hu" aria-pressed="false">
+      <span class="flag"><svg viewBox="0 0 3 3" aria-hidden="true"><rect width="3" height="1" fill="#CE2939"/><rect y="1" width="3" height="1" fill="#FFFFFF"/><rect y="2" width="3" height="1" fill="#477050"/></svg></span>HU
+    </button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="bunting" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="dartboard" aria-hidden="true"></div>
+    <div class="plate">
+      <span class="bolt tl"></span><span class="bolt tr"></span><span class="bolt bl"></span><span class="bolt br"></span>
+      <div class="plate-top">SÂNNICOLAU MARE ★ ROMÂNIA</div>
+      <div class="plate-main">CLASS CAFE</div>
+      <div class="plate-bot">— BAR &amp; PUB —</div>
+    </div>
+    <div class="tagline" data-i="tagline">Meniu &amp; Listă de Prețuri</div>
+    <div class="subnote" data-i="sub">Bere rece · Darts · Voie bună</div>
+  </header>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track"><span class="tick-seg"></span><span class="tick-seg"></span></div>
+  </div>
+
+  <main id="menu"></main>
+
+  <footer>
+    <div class="fbrand">★ CLASS CAFE ★</div>
+    <div data-i="vat">Toate prețurile includ TVA.</div>
+    <div data-i="thanks">Vă mulțumim că ne treceți pragul! 🍻</div>
+    <div>Sânnicolau Mare · România</div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var LANGS = ["ro","en","sr","hu"];
+  var hash = location.hash.replace("#","");
+  var lang = LANGS.indexOf(hash) > -1 ? hash : "ro";
+
+  /* ── texte generale / general UI text ─────────────────────── */
+  var I18N = {
+    tagline: { ro: "Meniu & Listă de Prețuri", en: "Menu & Price List",
+               sr: "Meni & Cenovnik",          hu: "Itallap & Árlista" },
+    sub:     { ro: "Bere rece · Darts · Voie bună", en: "Cold beer · Darts · Good times",
+               sr: "Hladno pivo · Pikado · Dobra zabava", hu: "Hideg sör · Darts · Jó hangulat" },
+    tick:    { ro: "BERE RECE ★ CAFEA ★ DARTS ★ VOIE BUNĂ ★ CLASS CAFE ★ ",
+               en: "COLD BEER ★ COFFEE ★ DARTS ★ GOOD TIMES ★ CLASS CAFE ★ ",
+               sr: "HLADNO PIVO ★ KAFA ★ PIKADO ★ DOBRA ZABAVA ★ CLASS CAFE ★ ",
+               hu: "HIDEG SÖR ★ KÁVÉ ★ DARTS ★ JÓ HANGULAT ★ CLASS CAFE ★ " },
+    vat:     { ro: "Toate prețurile includ TVA.", en: "All prices include VAT.",
+               sr: "Sve cene uključuju PDV.",     hu: "Áraink az áfát tartalmazzák." },
+    thanks:  { ro: "Vă mulțumim că ne treceți pragul! 🍻", en: "Thanks for stopping by! 🍻",
+               sr: "Hvala što ste nam svratili! 🍻",        hu: "Köszönjük a látogatást! 🍻" }
+  };
+  var ALC_LABEL = { ro: "Alc.", en: "Alc.", sr: "Alk.", hu: "Alk." };
+  var HTML_LANG = { ro: "ro", en: "en", sr: "sr-Latn", hu: "hu" };
+
+  /* ════════════════════════════════════════════════════════════
+     MENU DATA — EDITEAZĂ AICI / EDIT HERE
+     ────────────────────────────────────────────────────────────
+     price: 10        -> prețul în lei (un singur loc, toate limbile)
+     vol:   "500 ml"  -> gramaj / volum
+     alc:   4.5       -> % alcool (opțional; scrie 0 pentru 0,0%)
+     desc:  {ro,en,sr,hu} -> descriere (opțional)
+     Ca să adaugi un produs: copiază un bloc { ... } și modifică-l.
+     Ca să ștergi un produs: șterge blocul lui { ... },
+     ═══════════════════════════════════════════════════════════ */
+  var MENU = [
+    {
+      icon: "☕",
+      name: { ro: "Cafea & Ceai", en: "Coffee & Tea", sr: "Kafa & Čaj", hu: "Kávé & Tea" },
+      items: [
+        { name: { ro: "Espresso", en: "Espresso", sr: "Espreso", hu: "Espresso" },
+          desc: { ro: "cafea boabe Lavazza, apă, zahăr, lapte",
+                  en: "Lavazza coffee beans, water, sugar, milk",
+                  sr: "Lavazza kafa u zrnu, voda, šećer, mleko",
+                  hu: "Lavazza szemes kávé, víz, cukor, tej" },
+          vol: "80 ml", price: 7 },
+        { name: { ro: "Ciocolată Caldă", en: "Hot Chocolate", sr: "Topla Čokolada", hu: "Forró Csokoládé" },
+          desc: { ro: "lapte 200 ml, zahăr, cacao pudră 25 g",
+                  en: "milk 200 ml, sugar, cocoa powder 25 g",
+                  sr: "mleko 200 ml, šećer, kakao prah 25 g",
+                  hu: "tej 200 ml, cukor, kakaópor 25 g" },
+          vol: "200 ml", price: 10 },
+        { name: { ro: "Cappuccino", en: "Cappuccino", sr: "Kapućino", hu: "Cappuccino" },
+          desc: { ro: "lapte 150 ml, zahăr, cafea 50 ml",
+                  en: "milk 150 ml, sugar, coffee 50 ml",
+                  sr: "mleko 150 ml, šećer, kafa 50 ml",
+                  hu: "tej 150 ml, cukor, kávé 50 ml" },
+          vol: "200 ml", price: 8 },
+        { name: { ro: "Ceai", en: "Tea", sr: "Čaj", hu: "Tea" },
+          desc: { ro: "apă 200 ml, miere 20 g, plic ceai fructe / plante",
+                  en: "water 200 ml, honey 20 g, fruit / herbal tea bag",
+                  sr: "voda 200 ml, med 20 g, kesica voćnog / biljnog čaja",
+                  hu: "víz 200 ml, méz 20 g, gyümölcs / gyógytea filter" },
+          vol: "200 ml", price: 8 }
+      ]
+    },
+    {
+      icon: "🥤",
+      name: { ro: "Băuturi Răcoritoare", en: "Soft Drinks", sr: "Bezalkoholna Pića", hu: "Üdítők" },
+      items: [
+        { name: { ro: "Santal", en: "Santal", sr: "Santal", hu: "Santal" },
+          desc: { ro: "băutură neacidulată", en: "non-carbonated fruit drink",
+                  sr: "negazirani voćni napitak", hu: "szénsavmentes gyümölcsital" },
+          vol: "200 ml", price: 10 },
+        { name: { ro: "Pepsi Cola", en: "Pepsi Cola", sr: "Pepsi Cola", hu: "Pepsi Cola" },
+          desc: { ro: "băutură carbogazoasă", en: "carbonated drink",
+                  sr: "gazirano piće", hu: "szénsavas üdítő" },
+          vol: "330 ml", price: 10 },
+        { name: { ro: "Seven Up", en: "Seven Up", sr: "Seven Up", hu: "Seven Up" },
+          desc: { ro: "băutură carbogazoasă", en: "carbonated drink",
+                  sr: "gazirano piće", hu: "szénsavas üdítő" },
+          vol: "330 ml", price: 10 },
+        { name: { ro: "Mirinda", en: "Mirinda", sr: "Mirinda", hu: "Mirinda" },
+          desc: { ro: "băutură carbogazoasă", en: "carbonated drink",
+                  sr: "gazirano piće", hu: "szénsavas üdítő" },
+          vol: "330 ml", price: 10 },
+        { name: { ro: "Apă", en: "Water", sr: "Voda", hu: "Víz" },
+          desc: { ro: "minerală / plată", en: "sparkling / still",
+                  sr: "gazirana / negazirana", hu: "szénsavas / szénsavmentes" },
+          vol: "500 ml", price: 6 }
+      ]
+    },
+    {
+      icon: "⚡",
+      name: { ro: "Energizante", en: "Energy Drinks", sr: "Energetska Pića", hu: "Energiaitalok" },
+      items: [
+        { name: { ro: "Energizant", en: "Energy Drink", sr: "Energetsko Piće", hu: "Energiaital" },
+          desc: { ro: "băutură carbogazoasă", en: "carbonated energy drink",
+                  sr: "gazirano energetsko piće", hu: "szénsavas energiaital" },
+          vol: "250 ml", price: 10 }
+      ]
+    },
+    {
+      icon: "🍏",
+      name: { ro: "Cidru", en: "Cider", sr: "Cider", hu: "Cider" },
+      items: [
+        { name: { ro: "Cidru Dacic", en: "Dacic Cider", sr: "Dacic Cider", hu: "Dacic Cider" },
+          desc: { ro: "cidru aromatizat", en: "flavoured cider",
+                  sr: "aromatizovani cider", hu: "ízesített cider" },
+          alc: 4.5, vol: "275 ml", price: 10 }
+      ]
+    },
+    {
+      icon: "🍺",
+      name: { ro: "Bere", en: "Beer", sr: "Pivo", hu: "Sörök" },
+      items: [
+        { name: { ro: "Ciucaș", en: "Ciucaș", sr: "Ciucaș", hu: "Ciucaș" }, alc: 4.6, vol: "500 ml", price: 8 },
+        { name: { ro: "Beck's", en: "Beck's", sr: "Beck's", hu: "Beck's" }, alc: 5, vol: "500 ml", price: 11 },
+        { name: { ro: "Staropramen", en: "Staropramen", sr: "Staropramen", hu: "Staropramen" }, alc: 5, vol: "500 ml", price: 10 },
+        { name: { ro: "Amstel", en: "Amstel", sr: "Amstel", hu: "Amstel" }, alc: 5, vol: "500 ml", price: 10 },
+        { name: { ro: "Ursus Cooler", en: "Ursus Cooler", sr: "Ursus Cooler", hu: "Ursus Cooler" },
+          desc: { ro: "fără alcool", en: "non-alcoholic", sr: "bezalkoholno", hu: "alkoholmentes" },
+          alc: 0, vol: "330 ml", price: 10 },
+        { name: { ro: "Stella Artois", en: "Stella Artois", sr: "Stella Artois", hu: "Stella Artois" }, alc: 5, vol: "330 ml", price: 12 },
+        { name: { ro: "Tuborg", en: "Tuborg", sr: "Tuborg", hu: "Tuborg" }, alc: 5, vol: "500 ml", price: 10 },
+        { name: { ro: "Heineken", en: "Heineken", sr: "Heineken", hu: "Heineken" }, alc: 5, vol: "400 ml", price: 11 },
+        { name: { ro: "Bere fără alcool", en: "Non-Alcoholic Beer", sr: "Bezalkoholno Pivo", hu: "Alkoholmentes Sör" },
+          alc: 0, vol: "330 ml", price: 10 },
+        { name: { ro: "Paulaner", en: "Paulaner", sr: "Paulaner", hu: "Paulaner" }, alc: 5.5, vol: "500 ml", price: 16 },
+        { name: { ro: "Zipfer", en: "Zipfer", sr: "Zipfer", hu: "Zipfer" }, alc: 5, vol: "500 ml", price: 16 },
+        { name: { ro: "Tegernseer", en: "Tegernseer", sr: "Tegernseer", hu: "Tegernseer" }, alc: 4.8, vol: "500 ml", price: 16 },
+        { name: { ro: "Corona", en: "Corona", sr: "Corona", hu: "Corona" }, alc: 4.5, vol: "355 ml", price: 15 }
+      ]
+    },
+    {
+      icon: "🥃",
+      name: { ro: "Whisky & Cremă Irlandeză", en: "Whisky & Irish Cream",
+              sr: "Viski & Irski Krem", hu: "Whisky & Ír Krémlikőr" },
+      items: [
+        { name: { ro: "Jim Beam", en: "Jim Beam", sr: "Jim Beam", hu: "Jim Beam" }, alc: 40, vol: "50 ml", price: 10 },
+        { name: { ro: "Jameson", en: "Jameson", sr: "Jameson", hu: "Jameson" }, alc: 40, vol: "50 ml", price: 12 },
+        { name: { ro: "Jack Daniel's", en: "Jack Daniel's", sr: "Jack Daniel's", hu: "Jack Daniel's" }, alc: 40, vol: "50 ml", price: 12 },
+        { name: { ro: "Carolans Irish Cream", en: "Carolans Irish Cream", sr: "Carolans Irish Cream", hu: "Carolans Irish Cream" },
+          alc: 17, vol: "50 ml", price: 9 }
+      ]
+    },
+    {
+      icon: "🍸",
+      name: { ro: "Vodka & Rom", en: "Vodka & Rum", sr: "Votka & Rum", hu: "Vodka & Rum" },
+      items: [
+        { name: { ro: "Absolut", en: "Absolut", sr: "Absolut", hu: "Absolut" },
+          desc: { ro: "vodka", en: "vodka", sr: "votka", hu: "vodka" },
+          alc: 40, vol: "50 ml", price: 10 },
+        { name: { ro: "Finlandia", en: "Finlandia", sr: "Finlandia", hu: "Finlandia" },
+          desc: { ro: "vodka", en: "vodka", sr: "votka", hu: "vodka" },
+          alc: 40, vol: "50 ml", price: 10 },
+        { name: { ro: "Bacardi", en: "Bacardi", sr: "Bacardi", hu: "Bacardi" },
+          desc: { ro: "rom", en: "rum", sr: "rum", hu: "rum" },
+          alc: 35, vol: "50 ml", price: 10 }
+      ]
+    },
+    {
+      icon: "🍹",
+      name: { ro: "Cocktailuri", en: "Cocktails", sr: "Kokteli", hu: "Koktélok" },
+      items: [
+        { name: { ro: "Gin Tonic", en: "Gin Tonic", sr: "Džin Tonik", hu: "Gin Tonik" },
+          desc: { ro: "gin Wembley + Schweppes Tonic", en: "Wembley gin + Schweppes tonic",
+                  sr: "Wembley džin + Schweppes tonik", hu: "Wembley gin + Schweppes tonik" },
+          alc: 40, vol: "50 ml", price: 20 },
+        { name: { ro: "Aperol Spritz", en: "Aperol Spritz", sr: "Aperol Spric", hu: "Aperol Spritz" },
+          alc: 11, vol: "50 ml", price: 25 }
+      ]
+    },
+    {
+      icon: "🦌",
+      name: { ro: "Shoturi & Digestive", en: "Shots & Digestifs",
+              sr: "Šotovi & Digestivi", hu: "Shotok & Digesztívek" },
+      items: [
+        { name: { ro: "Jägermeister", en: "Jägermeister", sr: "Jägermeister", hu: "Jägermeister" }, alc: 35, vol: "50 ml", price: 12 },
+        { name: { ro: "Tequila", en: "Tequila", sr: "Tequila", hu: "Tequila" }, alc: 38, vol: "50 ml", price: 12 },
+        { name: { ro: "Courvoisier", en: "Courvoisier", sr: "Courvoisier", hu: "Courvoisier" },
+          desc: { ro: "cognac", en: "cognac", sr: "konjak", hu: "konyak" },
+          alc: 40, vol: "50 ml", price: 24 }
+      ]
+    },
+    {
+      icon: "🍷",
+      name: { ro: "Vin", en: "Wine", sr: "Vino", hu: "Bor" },
+      items: [
+        { name: { ro: "Vin Alb / Roșu", en: "White / Red Wine", sr: "Belo / Crno Vino", hu: "Fehér / Vörös Bor" },
+          metaText: { ro: "Alc. între 12 și 15% vol · 500 ml", en: "Alc. 12–15% vol · 500 ml",
+                      sr: "Alk. 12–15% vol · 500 ml", hu: "Alk. 12–15% vol · 500 ml" },
+          price: 24 }
+      ]
+    },
+    {
+      icon: "🥜",
+      name: { ro: "Gustări", en: "Snacks", sr: "Grickalice", hu: "Rágcsálnivalók" },
+      items: [
+        { name: { ro: "Nutline Arahide", en: "Nutline Peanuts", sr: "Nutline Kikiriki", hu: "Nutline Földimogyoró" },
+          vol: "135 g", price: 15 },
+        { name: { ro: "Chio Chips", en: "Chio Chips", sr: "Chio Chips", hu: "Chio Chips" },
+          desc: { ro: "cașcaval / sare / barbeque", en: "cheese / salted / barbecue",
+                  sr: "sir / slani / barbecue", hu: "sajtos / sós / barbecue" },
+          price: 11 }
+      ]
+    }
+  ];
+  /* ═══════════════ sfârșit date meniu / end of menu data ═════ */
+
+  function $(s){ return document.querySelector(s); }
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+  function t(o){ return o[lang] || o.ro; }
+  function dec(s){ return lang === "en" ? s : s.replace(".", ","); }
+  function priceTxt(p){ return dec(p.toFixed(2)) + " lei"; }
+  function alcTxt(a){
+    var s = (a === 0) ? "0.0" : (Number.isInteger(a) ? String(a) : a.toFixed(1));
+    return ALC_LABEL[lang] + " " + dec(s) + "% vol";
+  }
+  function metaOf(it){
+    if (it.metaText) return esc(t(it.metaText));
+    var parts = [];
+    if (it.desc) parts.push(esc(t(it.desc)));
+    if (typeof it.alc === "number") parts.push(alcTxt(it.alc));
+    if (it.vol) parts.push(esc(it.vol));
+    return parts.join(" · ");
+  }
+
+  function render(){
+    document.documentElement.lang = HTML_LANG[lang];
+
+    $("#menu").innerHTML = MENU.map(function(sec){
+      var rows = sec.items.map(function(it){
+        var m = metaOf(it);
+        return '<div class="row">'
+          +    '<div class="line">'
+          +      '<span class="iname">' + esc(t(it.name)) + '</span>'
+          +      '<span class="dots"></span>'
+          +      '<span class="iprice">' + priceTxt(it.price) + '</span>'
+          +    '</div>'
+          +    (m ? '<div class="imeta">' + m + '</div>' : '')
+          +  '</div>';
+      }).join("");
+      return '<section class="sec">'
+        +    '<div class="sec-h">'
+        +      '<span class="rule flip"></span>'
+        +      '<h2 class="sec-t"><span class="ic">' + sec.icon + '</span>' + esc(t(sec.name)) + '</h2>'
+        +      '<span class="rule"></span>'
+        +    '</div>'
+        +    rows
+        +  '</section>';
+    }).join("");
+
+    document.querySelectorAll("[data-i]").forEach(function(el){
+      el.textContent = I18N[el.dataset.i][lang];
+    });
+
+    var tickText = I18N.tick[lang].repeat(4);
+    document.querySelectorAll(".tick-seg").forEach(function(el){ el.textContent = tickText; });
+
+    document.querySelectorAll(".langbtn").forEach(function(b){
+      var on = b.dataset.lang === lang;
+      b.classList.toggle("active", on);
+      b.setAttribute("aria-pressed", String(on));
+    });
+  }
+
+  function setLang(l){
+    lang = l;
+    try { history.replaceState(null, "", "#" + l); } catch(e){}
+    render();
+  }
+
+  document.querySelectorAll(".langbtn").forEach(function(b){
+    b.addEventListener("click", function(){ setLang(b.dataset.lang); });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
