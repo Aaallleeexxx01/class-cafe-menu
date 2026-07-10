@@ -416,6 +416,16 @@
       padding-right: 8px
     }
 
+    .line.pour {
+      margin-top: 3px
+    }
+
+    .iname-sub {
+      font-size: 12.5px;
+      letter-spacing: .03em;
+      color: var(--muted)
+    }
+
     /* ── footer ─────────────────────────────────────── */
     footer {
       margin-top: 48px;
@@ -657,6 +667,14 @@
               vol: "330 ml", price: 10
             },
             {
+              name: { ro: "Sprite", en: "Sprite", sr: "Sprite", hu: "Sprite", de: "Sprite" },
+              desc: {
+                ro: "băutură carbogazoasă", en: "carbonated drink",
+                sr: "gazirano piće", hu: "szénsavas üdítő", de: "kohlensäurehaltiges Getränk"
+              },
+              vol: "330 ml", price: 10
+            },
+            {
               name: { ro: "Fanta", en: "Fanta", sr: "Fanta", hu: "Fanta", de: "Fanta" },
               desc: {
                 ro: "băutură carbogazoasă", en: "carbonated drink",
@@ -749,6 +767,14 @@
                 sr: "aromatizovani cider", hu: "ízesített cider", de: "aromatisierter Cider"
               },
               alc: 4.5, vol: "275 ml", price: 10
+            },
+            {
+              name: { ro: "Strongbow", en: "Strongbow", sr: "Strongbow", hu: "Strongbow", de: "Strongbow" },
+              desc: {
+                ro: "cidru aromatizat", en: "flavoured cider",
+                sr: "aromatizovani cider", hu: "ízesített cider", de: "aromatisierter Cider"
+              },
+              alc: 4.5, vol: "330 ml", price: 10
             }
           ]
         },
@@ -785,12 +811,12 @@
             sr: "Viski & Irski Krem", hu: "Whisky & Ír Krémlikőr", de: "Whisky & Irish Cream"
           },
           items: [
-            { name: { ro: "Jim Beam", en: "Jim Beam", sr: "Jim Beam", hu: "Jim Beam", de: "Jim Beam" }, alc: 40, vol: "25 ml", price: 10 },
-            { name: { ro: "Jameson", en: "Jameson", sr: "Jameson", hu: "Jameson", de: "Jameson" }, alc: 40, vol: "25 ml", price: 12 },
-            { name: { ro: "Jack Daniel's", en: "Jack Daniel's", sr: "Jack Daniel's", hu: "Jack Daniel's", de: "Jack Daniel's" }, alc: 40, vol: "25 ml", price: 12 },
+            { name: { ro: "Jim Beam", en: "Jim Beam", sr: "Jim Beam", hu: "Jim Beam", de: "Jim Beam" }, alc: 40, pours: [{ vol: "50 ml", price: 10 }, { vol: "100 ml", price: 20 }] },
+            { name: { ro: "Jameson", en: "Jameson", sr: "Jameson", hu: "Jameson", de: "Jameson" }, alc: 40, pours: [{ vol: "50 ml", price: 12 }, { vol: "100 ml", price: 24 }] },
+            { name: { ro: "Jack Daniel's", en: "Jack Daniel's", sr: "Jack Daniel's", hu: "Jack Daniel's", de: "Jack Daniel's" }, alc: 40, pours: [{ vol: "50 ml", price: 12 }, { vol: "100 ml", price: 24 }] },
             {
               name: { ro: "Carolans Irish Cream", en: "Carolans Irish Cream", sr: "Carolans Irish Cream", hu: "Carolans Irish Cream", de: "Carolans Irish Cream" },
-              alc: 17, vol: "25 ml", price: 9
+              alc: 17, vol: "50 ml", price: 9
             }
           ]
         },
@@ -801,17 +827,17 @@
             {
               name: { ro: "Absolut", en: "Absolut", sr: "Absolut", hu: "Absolut", de: "Absolut" },
               desc: { ro: "vodka", en: "vodka", sr: "votka", hu: "vodka", de: "Wodka" },
-              alc: 40, vol: "25 ml", price: 10
+              alc: 40, pours: [{ vol: "50 ml", price: 10 }, { vol: "100 ml", price: 20 }]
             },
             {
               name: { ro: "Finlandia", en: "Finlandia", sr: "Finlandia", hu: "Finlandia", de: "Finlandia" },
               desc: { ro: "vodka", en: "vodka", sr: "votka", hu: "vodka", de: "Wodka" },
-              alc: 40, vol: "25 ml", price: 10
+              alc: 40, pours: [{ vol: "50 ml", price: 10 }, { vol: "100 ml", price: 20 }]
             },
             {
               name: { ro: "Bacardi", en: "Bacardi", sr: "Bacardi", hu: "Bacardi", de: "Bacardi" },
               desc: { ro: "rom", en: "rum", sr: "rum", hu: "rum", de: "Rum" },
-              alc: 35, vol: "25 ml", price: 10
+              alc: 35, pours: [{ vol: "50 ml", price: 10 }, { vol: "100 ml", price: 20 }]
             }
           ]
         },
@@ -916,6 +942,20 @@
         $("#menu").innerHTML = MENU.map(function (sec) {
           var rows = sec.items.map(function (it) {
             var m = metaOf(it);
+            if (it.pours) {
+              var pourLines = it.pours.map(function (p) {
+                return '<div class="line pour">'
+                  + '<span class="iname-sub">' + esc(p.vol) + '</span>'
+                  + '<span class="dots"></span>'
+                  + '<span class="iprice">' + priceTxt(p.price) + '</span>'
+                  + '</div>';
+              }).join("");
+              return '<div class="row">'
+                + '<div class="line"><span class="iname">' + esc(t(it.name)) + '</span></div>'
+                + pourLines
+                + (m ? '<div class="imeta">' + m + '</div>' : '')
+                + '</div>';
+            }
             return '<div class="row">'
               + '<div class="line">'
               + '<span class="iname">' + esc(t(it.name)) + '</span>'
