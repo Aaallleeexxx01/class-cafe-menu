@@ -2,7 +2,7 @@
 <!--
   ════════════════════════════════════════════════════════════════
   CLASS CAFE · SÂNNICOLAU MARE — MENIU DIGITAL / DIGITAL MENU
-  Limbi / Languages: RO · EN · SR · HU  (link direct: #en #sr #hu)
+  Limbi / Languages: RO · EN · SR · HU · DE  (link direct: #en #sr #hu #de)
   ════════════════════════════════════════════════════════════════
   CUM MODIFICI PREȚURILE / HOW TO EDIT PRICES:
     1. Caută mai jos secțiunea marcată "MENU DATA — EDITEAZĂ AICI"
@@ -10,8 +10,8 @@
     2. Schimbă numărul de la "price:" (ex. price: 10 -> price: 12)
     3. Salvează / commit pe GitHub -> site-ul se actualizează,
        codul QR rămâne ACELAȘI. Nu trebuie retipărit nimic.
-  Un singur preț pe produs — toate cele 4 limbi îl folosesc automat.
-  One price per item — all 4 languages use it automatically.
+  Un singur preț pe produs — toate cele 5 limbi îl folosesc automat.
+  One price per item — all 5 languages use it automatically.
   ════════════════════════════════════════════════════════════════
 -->
 <html lang="ro">
@@ -19,7 +19,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#171210">
-<meta name="description" content="Class Cafe · Sânnicolau Mare — meniu și listă de prețuri · menu · meni · itallap">
+<meta name="description" content="Class Cafe · Sânnicolau Mare — meniu și listă de prețuri · menu · meni · itallap · Getränkekarte">
 <title>Class Cafe · Meniu</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍺</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -76,8 +76,9 @@
     transition:background .15s,color .15s,border-color .15s;
   }
   .langbtn.active{background:var(--amber);border-color:var(--amber);color:#241708}
-  .flag{width:16px;height:11px;border-radius:2px;overflow:hidden;display:inline-flex;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
-  .flag svg{display:block;width:100%;height:100%}
+  /* flag hugs its own aspect ratio: fixed height, width follows the SVG viewBox */
+  .flag{height:12px;width:auto;border-radius:2px;overflow:hidden;display:inline-flex;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+  .flag svg{display:block;height:12px;width:auto}
   @media (max-width:480px){
     .topbar{flex-direction:column;gap:8px;padding:9px 10px}
   }
@@ -179,7 +180,7 @@
 
 <div class="topbar">
   <div class="brand"><span class="star">★</span>CLASS CAFE<span class="star">★</span></div>
-  <div class="lang" role="group" aria-label="Limbă / Language / Jezik / Nyelv">
+  <div class="lang" role="group" aria-label="Limbă / Language / Jezik / Nyelv / Sprache">
     <button class="langbtn" data-lang="ro" aria-pressed="true">
       <span class="flag"><svg viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#002B7F"/><rect x="1" width="1" height="2" fill="#FCD116"/><rect x="2" width="1" height="2" fill="#CE1126"/></svg></span>RO
     </button>
@@ -187,10 +188,13 @@
       <span class="flag"><svg viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 60,30 M60,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 60,30 M60,0 0,30" stroke="#C8102E" stroke-width="2.6"/><path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/></svg></span>EN
     </button>
     <button class="langbtn" data-lang="sr" aria-pressed="false">
-      <span class="flag"><svg viewBox="0 0 3 3" aria-hidden="true"><rect width="3" height="1" fill="#C6363C"/><rect y="1" width="3" height="1" fill="#0C4076"/><rect y="2" width="3" height="1" fill="#FFFFFF"/></svg></span>SR
+      <span class="flag"><svg viewBox="0 0 9 6" aria-hidden="true"><rect width="9" height="2" fill="#C6363C"/><rect y="2" width="9" height="2" fill="#0C4076"/><rect y="4" width="9" height="2" fill="#FFFFFF"/></svg></span>SR
     </button>
     <button class="langbtn" data-lang="hu" aria-pressed="false">
-      <span class="flag"><svg viewBox="0 0 3 3" aria-hidden="true"><rect width="3" height="1" fill="#CE2939"/><rect y="1" width="3" height="1" fill="#FFFFFF"/><rect y="2" width="3" height="1" fill="#477050"/></svg></span>HU
+      <span class="flag"><svg viewBox="0 0 6 3" aria-hidden="true"><rect width="6" height="1" fill="#CE2939"/><rect y="1" width="6" height="1" fill="#FFFFFF"/><rect y="2" width="6" height="1" fill="#477050"/></svg></span>HU
+    </button>
+    <button class="langbtn" data-lang="de" aria-pressed="false">
+      <span class="flag"><svg viewBox="0 0 5 3" aria-hidden="true"><rect width="5" height="1" fill="#000000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg></span>DE
     </button>
   </div>
 </div>
@@ -229,27 +233,32 @@
 (function(){
   "use strict";
 
-  var LANGS = ["ro","en","sr","hu"];
+  var LANGS = ["ro","en","sr","hu","de"];
   var hash = location.hash.replace("#","");
   var lang = LANGS.indexOf(hash) > -1 ? hash : "ro";
 
   /* ── texte generale / general UI text ─────────────────────── */
   var I18N = {
     tagline: { ro: "Meniu & Listă de Prețuri", en: "Menu & Price List",
-               sr: "Meni & Cenovnik",          hu: "Itallap & Árlista" },
+               sr: "Meni & Cenovnik",          hu: "Itallap & Árlista",
+               de: "Getränkekarte & Preisliste" },
     sub:     { ro: "Bere rece · Darts · Voie bună", en: "Cold beer · Darts · Good times",
-               sr: "Hladno pivo · Pikado · Dobra zabava", hu: "Hideg sör · Darts · Jó hangulat" },
+               sr: "Hladno pivo · Pikado · Dobra zabava", hu: "Hideg sör · Darts · Jó hangulat",
+               de: "Kaltes Bier · Darts · Gute Laune" },
     tick:    { ro: "BERE RECE ★ CAFEA ★ DARTS ★ VOIE BUNĂ ★ CLASS CAFE ★ ",
                en: "COLD BEER ★ COFFEE ★ DARTS ★ GOOD TIMES ★ CLASS CAFE ★ ",
                sr: "HLADNO PIVO ★ KAFA ★ PIKADO ★ DOBRA ZABAVA ★ CLASS CAFE ★ ",
-               hu: "HIDEG SÖR ★ KÁVÉ ★ DARTS ★ JÓ HANGULAT ★ CLASS CAFE ★ " },
+               hu: "HIDEG SÖR ★ KÁVÉ ★ DARTS ★ JÓ HANGULAT ★ CLASS CAFE ★ ",
+               de: "KALTES BIER ★ KAFFEE ★ DARTS ★ GUTE LAUNE ★ CLASS CAFE ★ " },
     vat:     { ro: "Toate prețurile includ TVA.", en: "All prices include VAT.",
-               sr: "Sve cene uključuju PDV.",     hu: "Áraink az áfát tartalmazzák." },
+               sr: "Sve cene uključuju PDV.",     hu: "Áraink az áfát tartalmazzák.",
+               de: "Alle Preise inkl. MwSt." },
     thanks:  { ro: "Vă mulțumim că ne treceți pragul! 🍻", en: "Thanks for stopping by! 🍻",
-               sr: "Hvala što ste nam svratili! 🍻",        hu: "Köszönjük a látogatást! 🍻" }
+               sr: "Hvala što ste nam svratili! 🍻",        hu: "Köszönjük a látogatást! 🍻",
+               de: "Danke für Ihren Besuch! 🍻" }
   };
-  var ALC_LABEL = { ro: "Alc.", en: "Alc.", sr: "Alk.", hu: "Alk." };
-  var HTML_LANG = { ro: "ro", en: "en", sr: "sr-Latn", hu: "hu" };
+  var ALC_LABEL = { ro: "Alc.", en: "Alc.", sr: "Alk.", hu: "Alk.", de: "Alk." };
+  var HTML_LANG = { ro: "ro", en: "en", sr: "sr-Latn", hu: "hu", de: "de" };
 
   /* ════════════════════════════════════════════════════════════
      MENU DATA — EDITEAZĂ AICI / EDIT HERE
@@ -257,179 +266,194 @@
      price: 10        -> prețul în lei (un singur loc, toate limbile)
      vol:   "500 ml"  -> gramaj / volum
      alc:   4.5       -> % alcool (opțional; scrie 0 pentru 0,0%)
-     desc:  {ro,en,sr,hu} -> descriere (opțional)
+     desc:  {ro,en,sr,hu,de} -> descriere (opțional)
      Ca să adaugi un produs: copiază un bloc { ... } și modifică-l.
      Ca să ștergi un produs: șterge blocul lui { ... },
      ═══════════════════════════════════════════════════════════ */
   var MENU = [
     {
       icon: "☕",
-      name: { ro: "Cafea & Ceai", en: "Coffee & Tea", sr: "Kafa & Čaj", hu: "Kávé & Tea" },
+      name: { ro: "Cafea & Ceai", en: "Coffee & Tea", sr: "Kafa & Čaj", hu: "Kávé & Tea", de: "Kaffee & Tee" },
       items: [
-        { name: { ro: "Espresso", en: "Espresso", sr: "Espreso", hu: "Espresso" },
+        { name: { ro: "Espresso", en: "Espresso", sr: "Espreso", hu: "Espresso", de: "Espresso" },
           desc: { ro: "cafea boabe Lavazza, apă, zahăr, lapte",
                   en: "Lavazza coffee beans, water, sugar, milk",
                   sr: "Lavazza kafa u zrnu, voda, šećer, mleko",
-                  hu: "Lavazza szemes kávé, víz, cukor, tej" },
+                  hu: "Lavazza szemes kávé, víz, cukor, tej",
+                  de: "Lavazza Kaffeebohnen, Wasser, Zucker, Milch" },
           vol: "80 ml", price: 7 },
-        { name: { ro: "Ciocolată Caldă", en: "Hot Chocolate", sr: "Topla Čokolada", hu: "Forró Csokoládé" },
+        { name: { ro: "Ciocolată Caldă", en: "Hot Chocolate", sr: "Topla Čokolada", hu: "Forró Csokoládé", de: "Heiße Schokolade" },
           desc: { ro: "lapte 200 ml, zahăr, cacao pudră 25 g",
                   en: "milk 200 ml, sugar, cocoa powder 25 g",
                   sr: "mleko 200 ml, šećer, kakao prah 25 g",
-                  hu: "tej 200 ml, cukor, kakaópor 25 g" },
+                  hu: "tej 200 ml, cukor, kakaópor 25 g",
+                  de: "Milch 200 ml, Zucker, Kakaopulver 25 g" },
           vol: "200 ml", price: 10 },
-        { name: { ro: "Cappuccino", en: "Cappuccino", sr: "Kapućino", hu: "Cappuccino" },
+        { name: { ro: "Cappuccino", en: "Cappuccino", sr: "Kapućino", hu: "Cappuccino", de: "Cappuccino" },
           desc: { ro: "lapte 150 ml, zahăr, cafea 50 ml",
                   en: "milk 150 ml, sugar, coffee 50 ml",
                   sr: "mleko 150 ml, šećer, kafa 50 ml",
-                  hu: "tej 150 ml, cukor, kávé 50 ml" },
+                  hu: "tej 150 ml, cukor, kávé 50 ml",
+                  de: "Milch 150 ml, Zucker, Kaffee 50 ml" },
           vol: "200 ml", price: 8 },
-        { name: { ro: "Ceai", en: "Tea", sr: "Čaj", hu: "Tea" },
+        { name: { ro: "Ceai", en: "Tea", sr: "Čaj", hu: "Tea", de: "Tee" },
           desc: { ro: "apă 200 ml, miere 20 g, plic ceai fructe / plante",
                   en: "water 200 ml, honey 20 g, fruit / herbal tea bag",
                   sr: "voda 200 ml, med 20 g, kesica voćnog / biljnog čaja",
-                  hu: "víz 200 ml, méz 20 g, gyümölcs / gyógytea filter" },
+                  hu: "víz 200 ml, méz 20 g, gyümölcs / gyógytea filter",
+                  de: "Wasser 200 ml, Honig 20 g, Früchte-/Kräuterteebeutel" },
           vol: "200 ml", price: 8 }
       ]
     },
     {
       icon: "🥤",
-      name: { ro: "Băuturi Răcoritoare", en: "Soft Drinks", sr: "Bezalkoholna Pića", hu: "Üdítők" },
+      name: { ro: "Băuturi Răcoritoare", en: "Soft Drinks", sr: "Bezalkoholna Pića", hu: "Üdítők", de: "Alkoholfreie Getränke" },
       items: [
-        { name: { ro: "Santal", en: "Santal", sr: "Santal", hu: "Santal" },
+        { name: { ro: "Santal", en: "Santal", sr: "Santal", hu: "Santal", de: "Santal" },
           desc: { ro: "băutură neacidulată", en: "non-carbonated fruit drink",
-                  sr: "negazirani voćni napitak", hu: "szénsavmentes gyümölcsital" },
+                  sr: "negazirani voćni napitak", hu: "szénsavmentes gyümölcsital",
+                  de: "stilles Fruchtgetränk" },
           vol: "200 ml", price: 10 },
-        { name: { ro: "Pepsi Cola", en: "Pepsi Cola", sr: "Pepsi Cola", hu: "Pepsi Cola" },
+        { name: { ro: "Pepsi Cola", en: "Pepsi Cola", sr: "Pepsi Cola", hu: "Pepsi Cola", de: "Pepsi Cola" },
           desc: { ro: "băutură carbogazoasă", en: "carbonated drink",
-                  sr: "gazirano piće", hu: "szénsavas üdítő" },
+                  sr: "gazirano piće", hu: "szénsavas üdítő", de: "kohlensäurehaltiges Getränk" },
           vol: "330 ml", price: 10 },
-        { name: { ro: "Seven Up", en: "Seven Up", sr: "Seven Up", hu: "Seven Up" },
+        { name: { ro: "Seven Up", en: "Seven Up", sr: "Seven Up", hu: "Seven Up", de: "Seven Up" },
           desc: { ro: "băutură carbogazoasă", en: "carbonated drink",
-                  sr: "gazirano piće", hu: "szénsavas üdítő" },
+                  sr: "gazirano piće", hu: "szénsavas üdítő", de: "kohlensäurehaltiges Getränk" },
           vol: "330 ml", price: 10 },
-        { name: { ro: "Mirinda", en: "Mirinda", sr: "Mirinda", hu: "Mirinda" },
+        { name: { ro: "Mirinda", en: "Mirinda", sr: "Mirinda", hu: "Mirinda", de: "Mirinda" },
           desc: { ro: "băutură carbogazoasă", en: "carbonated drink",
-                  sr: "gazirano piće", hu: "szénsavas üdítő" },
+                  sr: "gazirano piće", hu: "szénsavas üdítő", de: "kohlensäurehaltiges Getränk" },
           vol: "330 ml", price: 10 },
-        { name: { ro: "Apă", en: "Water", sr: "Voda", hu: "Víz" },
+        { name: { ro: "Apă", en: "Water", sr: "Voda", hu: "Víz", de: "Wasser" },
           desc: { ro: "minerală / plată", en: "sparkling / still",
-                  sr: "gazirana / negazirana", hu: "szénsavas / szénsavmentes" },
+                  sr: "gazirana / negazirana", hu: "szénsavas / szénsavmentes",
+                  de: "mit / ohne Kohlensäure" },
           vol: "500 ml", price: 6 }
       ]
     },
     {
       icon: "⚡",
-      name: { ro: "Energizante", en: "Energy Drinks", sr: "Energetska Pića", hu: "Energiaitalok" },
+      name: { ro: "Energizante", en: "Energy Drinks", sr: "Energetska Pića", hu: "Energiaitalok", de: "Energydrinks" },
       items: [
-        { name: { ro: "Energizant", en: "Energy Drink", sr: "Energetsko Piće", hu: "Energiaital" },
+        { name: { ro: "Energizant", en: "Energy Drink", sr: "Energetsko Piće", hu: "Energiaital", de: "Energydrink" },
           desc: { ro: "băutură carbogazoasă", en: "carbonated energy drink",
-                  sr: "gazirano energetsko piće", hu: "szénsavas energiaital" },
+                  sr: "gazirano energetsko piće", hu: "szénsavas energiaital",
+                  de: "kohlensäurehaltiger Energydrink" },
           vol: "250 ml", price: 10 }
       ]
     },
     {
       icon: "🍏",
-      name: { ro: "Cidru", en: "Cider", sr: "Cider", hu: "Cider" },
+      name: { ro: "Cidru", en: "Cider", sr: "Cider", hu: "Cider", de: "Cider" },
       items: [
-        { name: { ro: "Cidru Dacic", en: "Dacic Cider", sr: "Dacic Cider", hu: "Dacic Cider" },
+        { name: { ro: "Cidru Dacic", en: "Dacic Cider", sr: "Dacic Cider", hu: "Dacic Cider", de: "Dacic Cider" },
           desc: { ro: "cidru aromatizat", en: "flavoured cider",
-                  sr: "aromatizovani cider", hu: "ízesített cider" },
+                  sr: "aromatizovani cider", hu: "ízesített cider", de: "aromatisierter Cider" },
           alc: 4.5, vol: "275 ml", price: 10 }
       ]
     },
     {
       icon: "🍺",
-      name: { ro: "Bere", en: "Beer", sr: "Pivo", hu: "Sörök" },
+      name: { ro: "Bere", en: "Beer", sr: "Pivo", hu: "Sörök", de: "Bier" },
       items: [
-        { name: { ro: "Ciucaș", en: "Ciucaș", sr: "Ciucaș", hu: "Ciucaș" }, alc: 4.6, vol: "500 ml", price: 8 },
-        { name: { ro: "Beck's", en: "Beck's", sr: "Beck's", hu: "Beck's" }, alc: 5, vol: "500 ml", price: 11 },
-        { name: { ro: "Staropramen", en: "Staropramen", sr: "Staropramen", hu: "Staropramen" }, alc: 5, vol: "500 ml", price: 10 },
-        { name: { ro: "Amstel", en: "Amstel", sr: "Amstel", hu: "Amstel" }, alc: 5, vol: "500 ml", price: 10 },
-        { name: { ro: "Ursus Cooler", en: "Ursus Cooler", sr: "Ursus Cooler", hu: "Ursus Cooler" },
-          desc: { ro: "fără alcool", en: "non-alcoholic", sr: "bezalkoholno", hu: "alkoholmentes" },
+        { name: { ro: "Ciucaș", en: "Ciucaș", sr: "Ciucaș", hu: "Ciucaș", de: "Ciucaș" }, alc: 4.6, vol: "500 ml", price: 8 },
+        { name: { ro: "Beck's", en: "Beck's", sr: "Beck's", hu: "Beck's", de: "Beck's" }, alc: 5, vol: "500 ml", price: 11 },
+        { name: { ro: "Staropramen", en: "Staropramen", sr: "Staropramen", hu: "Staropramen", de: "Staropramen" }, alc: 5, vol: "500 ml", price: 10 },
+        { name: { ro: "Amstel", en: "Amstel", sr: "Amstel", hu: "Amstel", de: "Amstel" }, alc: 5, vol: "500 ml", price: 10 },
+        { name: { ro: "Ursus Cooler", en: "Ursus Cooler", sr: "Ursus Cooler", hu: "Ursus Cooler", de: "Ursus Cooler" },
+          desc: { ro: "fără alcool", en: "non-alcoholic", sr: "bezalkoholno", hu: "alkoholmentes", de: "alkoholfrei" },
           alc: 0, vol: "330 ml", price: 10 },
-        { name: { ro: "Stella Artois", en: "Stella Artois", sr: "Stella Artois", hu: "Stella Artois" }, alc: 5, vol: "330 ml", price: 12 },
-        { name: { ro: "Tuborg", en: "Tuborg", sr: "Tuborg", hu: "Tuborg" }, alc: 5, vol: "500 ml", price: 10 },
-        { name: { ro: "Heineken", en: "Heineken", sr: "Heineken", hu: "Heineken" }, alc: 5, vol: "400 ml", price: 11 },
-        { name: { ro: "Bere fără alcool", en: "Non-Alcoholic Beer", sr: "Bezalkoholno Pivo", hu: "Alkoholmentes Sör" },
+        { name: { ro: "Stella Artois", en: "Stella Artois", sr: "Stella Artois", hu: "Stella Artois", de: "Stella Artois" }, alc: 5, vol: "330 ml", price: 12 },
+        { name: { ro: "Tuborg", en: "Tuborg", sr: "Tuborg", hu: "Tuborg", de: "Tuborg" }, alc: 5, vol: "500 ml", price: 10 },
+        { name: { ro: "Heineken", en: "Heineken", sr: "Heineken", hu: "Heineken", de: "Heineken" }, alc: 5, vol: "400 ml", price: 11 },
+        { name: { ro: "Bere fără alcool", en: "Non-Alcoholic Beer", sr: "Bezalkoholno Pivo", hu: "Alkoholmentes Sör", de: "Alkoholfreies Bier" },
           alc: 0, vol: "330 ml", price: 10 },
-        { name: { ro: "Paulaner", en: "Paulaner", sr: "Paulaner", hu: "Paulaner" }, alc: 5.5, vol: "500 ml", price: 16 },
-        { name: { ro: "Zipfer", en: "Zipfer", sr: "Zipfer", hu: "Zipfer" }, alc: 5, vol: "500 ml", price: 16 },
-        { name: { ro: "Tegernseer", en: "Tegernseer", sr: "Tegernseer", hu: "Tegernseer" }, alc: 4.8, vol: "500 ml", price: 16 },
-        { name: { ro: "Corona", en: "Corona", sr: "Corona", hu: "Corona" }, alc: 4.5, vol: "355 ml", price: 15 }
+        { name: { ro: "Paulaner", en: "Paulaner", sr: "Paulaner", hu: "Paulaner", de: "Paulaner" }, alc: 5.5, vol: "500 ml", price: 16 },
+        { name: { ro: "Zipfer", en: "Zipfer", sr: "Zipfer", hu: "Zipfer", de: "Zipfer" }, alc: 5, vol: "500 ml", price: 16 },
+        { name: { ro: "Tegernseer", en: "Tegernseer", sr: "Tegernseer", hu: "Tegernseer", de: "Tegernseer" }, alc: 4.8, vol: "500 ml", price: 16 },
+        { name: { ro: "Corona", en: "Corona", sr: "Corona", hu: "Corona", de: "Corona" }, alc: 4.5, vol: "355 ml", price: 15 }
       ]
     },
     {
       icon: "🥃",
       name: { ro: "Whisky & Cremă Irlandeză", en: "Whisky & Irish Cream",
-              sr: "Viski & Irski Krem", hu: "Whisky & Ír Krémlikőr" },
+              sr: "Viski & Irski Krem", hu: "Whisky & Ír Krémlikőr", de: "Whisky & Irish Cream" },
       items: [
-        { name: { ro: "Jim Beam", en: "Jim Beam", sr: "Jim Beam", hu: "Jim Beam" }, alc: 40, vol: "50 ml", price: 10 },
-        { name: { ro: "Jameson", en: "Jameson", sr: "Jameson", hu: "Jameson" }, alc: 40, vol: "50 ml", price: 12 },
-        { name: { ro: "Jack Daniel's", en: "Jack Daniel's", sr: "Jack Daniel's", hu: "Jack Daniel's" }, alc: 40, vol: "50 ml", price: 12 },
-        { name: { ro: "Carolans Irish Cream", en: "Carolans Irish Cream", sr: "Carolans Irish Cream", hu: "Carolans Irish Cream" },
-          alc: 17, vol: "50 ml", price: 9 }
+        { name: { ro: "Jim Beam", en: "Jim Beam", sr: "Jim Beam", hu: "Jim Beam", de: "Jim Beam" }, alc: 40, vol: "25 ml", price: 10 },
+        { name: { ro: "Jameson", en: "Jameson", sr: "Jameson", hu: "Jameson", de: "Jameson" }, alc: 40, vol: "25 ml", price: 12 },
+        { name: { ro: "Jack Daniel's", en: "Jack Daniel's", sr: "Jack Daniel's", hu: "Jack Daniel's", de: "Jack Daniel's" }, alc: 40, vol: "25 ml", price: 12 },
+        { name: { ro: "Carolans Irish Cream", en: "Carolans Irish Cream", sr: "Carolans Irish Cream", hu: "Carolans Irish Cream", de: "Carolans Irish Cream" },
+          alc: 17, vol: "25 ml", price: 9 }
       ]
     },
     {
       icon: "🍸",
-      name: { ro: "Vodka & Rom", en: "Vodka & Rum", sr: "Votka & Rum", hu: "Vodka & Rum" },
+      name: { ro: "Vodka & Rom", en: "Vodka & Rum", sr: "Votka & Rum", hu: "Vodka & Rum", de: "Wodka & Rum" },
       items: [
-        { name: { ro: "Absolut", en: "Absolut", sr: "Absolut", hu: "Absolut" },
-          desc: { ro: "vodka", en: "vodka", sr: "votka", hu: "vodka" },
-          alc: 40, vol: "50 ml", price: 10 },
-        { name: { ro: "Finlandia", en: "Finlandia", sr: "Finlandia", hu: "Finlandia" },
-          desc: { ro: "vodka", en: "vodka", sr: "votka", hu: "vodka" },
-          alc: 40, vol: "50 ml", price: 10 },
-        { name: { ro: "Bacardi", en: "Bacardi", sr: "Bacardi", hu: "Bacardi" },
-          desc: { ro: "rom", en: "rum", sr: "rum", hu: "rum" },
-          alc: 35, vol: "50 ml", price: 10 }
+        { name: { ro: "Absolut", en: "Absolut", sr: "Absolut", hu: "Absolut", de: "Absolut" },
+          desc: { ro: "vodka", en: "vodka", sr: "votka", hu: "vodka", de: "Wodka" },
+          alc: 40, vol: "25 ml", price: 10 },
+        { name: { ro: "Finlandia", en: "Finlandia", sr: "Finlandia", hu: "Finlandia", de: "Finlandia" },
+          desc: { ro: "vodka", en: "vodka", sr: "votka", hu: "vodka", de: "Wodka" },
+          alc: 40, vol: "25 ml", price: 10 },
+        { name: { ro: "Bacardi", en: "Bacardi", sr: "Bacardi", hu: "Bacardi", de: "Bacardi" },
+          desc: { ro: "rom", en: "rum", sr: "rum", hu: "rum", de: "Rum" },
+          alc: 35, vol: "25 ml", price: 10 }
       ]
     },
     {
       icon: "🍹",
-      name: { ro: "Cocktailuri", en: "Cocktails", sr: "Kokteli", hu: "Koktélok" },
+      name: { ro: "Cocktailuri", en: "Cocktails", sr: "Kokteli", hu: "Koktélok", de: "Cocktails" },
       items: [
-        { name: { ro: "Gin Tonic", en: "Gin Tonic", sr: "Džin Tonik", hu: "Gin Tonik" },
+        { name: { ro: "Gin Tonic", en: "Gin Tonic", sr: "Džin Tonik", hu: "Gin Tonik", de: "Gin Tonic" },
           desc: { ro: "gin Wembley + Schweppes Tonic", en: "Wembley gin + Schweppes tonic",
-                  sr: "Wembley džin + Schweppes tonik", hu: "Wembley gin + Schweppes tonik" },
+                  sr: "Wembley džin + Schweppes tonik", hu: "Wembley gin + Schweppes tonik",
+                  de: "Wembley Gin + Schweppes Tonic" },
           alc: 40, vol: "50 ml", price: 20 },
-        { name: { ro: "Aperol Spritz", en: "Aperol Spritz", sr: "Aperol Spric", hu: "Aperol Spritz" },
+        { name: { ro: "Aperol Spritz", en: "Aperol Spritz", sr: "Aperol Spric", hu: "Aperol Spritz", de: "Aperol Spritz" },
           alc: 11, vol: "50 ml", price: 25 }
       ]
     },
     {
       icon: "🦌",
       name: { ro: "Shoturi & Digestive", en: "Shots & Digestifs",
-              sr: "Šotovi & Digestivi", hu: "Shotok & Digesztívek" },
+              sr: "Šotovi & Digestivi", hu: "Shotok & Digesztívek", de: "Shots & Digestifs" },
       items: [
-        { name: { ro: "Jägermeister", en: "Jägermeister", sr: "Jägermeister", hu: "Jägermeister" }, alc: 35, vol: "50 ml", price: 12 },
-        { name: { ro: "Tequila", en: "Tequila", sr: "Tequila", hu: "Tequila" }, alc: 38, vol: "50 ml", price: 12 },
-        { name: { ro: "Courvoisier", en: "Courvoisier", sr: "Courvoisier", hu: "Courvoisier" },
-          desc: { ro: "cognac", en: "cognac", sr: "konjak", hu: "konyak" },
+        { name: { ro: "Jägermeister", en: "Jägermeister", sr: "Jägermeister", hu: "Jägermeister", de: "Jägermeister" }, alc: 35, vol: "25 ml", price: 12 },
+        { name: { ro: "Tequila", en: "Tequila", sr: "Tequila", hu: "Tequila", de: "Tequila" }, alc: 38, vol: "25 ml", price: 12 }
+      ]
+    },
+    {
+      icon: "🍾",
+      name: { ro: "Coniac", en: "Cognac", sr: "Konjak", hu: "Konyak", de: "Cognac" },
+      items: [
+        { name: { ro: "Courvoisier", en: "Courvoisier", sr: "Courvoisier", hu: "Courvoisier", de: "Courvoisier" },
           alc: 40, vol: "50 ml", price: 24 }
       ]
     },
     {
       icon: "🍷",
-      name: { ro: "Vin", en: "Wine", sr: "Vino", hu: "Bor" },
+      name: { ro: "Vin", en: "Wine", sr: "Vino", hu: "Bor", de: "Wein" },
       items: [
-        { name: { ro: "Vin Alb / Roșu", en: "White / Red Wine", sr: "Belo / Crno Vino", hu: "Fehér / Vörös Bor" },
+        { name: { ro: "Vin Alb / Roșu", en: "White / Red Wine", sr: "Belo / Crno Vino", hu: "Fehér / Vörös Bor", de: "Weiß- / Rotwein" },
           metaText: { ro: "Alc. între 12 și 15% vol · 500 ml", en: "Alc. 12–15% vol · 500 ml",
-                      sr: "Alk. 12–15% vol · 500 ml", hu: "Alk. 12–15% vol · 500 ml" },
+                      sr: "Alk. 12–15% vol · 500 ml", hu: "Alk. 12–15% vol · 500 ml",
+                      de: "Alk. 12–15% vol · 500 ml" },
           price: 24 }
       ]
     },
     {
       icon: "🥜",
-      name: { ro: "Gustări", en: "Snacks", sr: "Grickalice", hu: "Rágcsálnivalók" },
+      name: { ro: "Gustări", en: "Snacks", sr: "Grickalice", hu: "Rágcsálnivalók", de: "Snacks" },
       items: [
-        { name: { ro: "Nutline Arahide", en: "Nutline Peanuts", sr: "Nutline Kikiriki", hu: "Nutline Földimogyoró" },
+        { name: { ro: "Nutline Arahide", en: "Nutline Peanuts", sr: "Nutline Kikiriki", hu: "Nutline Földimogyoró", de: "Nutline Erdnüsse" },
           vol: "135 g", price: 15 },
-        { name: { ro: "Chio Chips", en: "Chio Chips", sr: "Chio Chips", hu: "Chio Chips" },
+        { name: { ro: "Chio Chips", en: "Chio Chips", sr: "Chio Chips", hu: "Chio Chips", de: "Chio Chips" },
           desc: { ro: "cașcaval / sare / barbeque", en: "cheese / salted / barbecue",
-                  sr: "sir / slani / barbecue", hu: "sajtos / sós / barbecue" },
+                  sr: "sir / slani / barbecue", hu: "sajtos / sós / barbecue",
+                  de: "Käse / gesalzen / Barbecue" },
           price: 11 }
       ]
     }
